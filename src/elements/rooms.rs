@@ -33,6 +33,7 @@ pub enum RoomType {
     MessHall,
     Bridge,
     EnergyCore,
+    AnyRoom
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Version {
