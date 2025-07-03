@@ -8,13 +8,9 @@
 
 use std::collections::HashSet;
 
-#[derive(Debug)]
-enum Ressource {
-    Metal,
-    Energy,
-    Nanobots,
-    Data,
-}
+use crate::elements::ressources::*;
+
+
 /// Rooms
 
 
@@ -42,17 +38,17 @@ impl Room {
                     Room::CrewQuarters(
                         Version::V1,
                         RepairField {
-                            ressources: vec![
-                                (Ressource::Energy, false),
-                                (Ressource::Data, false),
-                                (Ressource::Metal, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Energy, false),
+                                (RessourceType::Data, false),
+                                (RessourceType::Metal, false),
                             ],
                         },
                         DivertField {
-                            ressources: vec![
-                                (Ressource::Metal, false),
-                                (Ressource::Metal, false),
-                                (Ressource::Nanobots, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Metal, false),
+                                (RessourceType::Metal, false),
+                                (RessourceType::Nanobots, false),
                             ],
                         },
                         Ability {
@@ -65,17 +61,17 @@ impl Room {
                 rooms.push(Room::EngineRoom(
                         Version::V1,
                         RepairField {
-                            ressources: vec![
-                                (Ressource::Data, false),
-                                (Ressource::Metal, false),
-                                (Ressource::Nanobots, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Data, false),
+                                (RessourceType::Metal, false),
+                                (RessourceType::Nanobots, false),
                             ],
                         },
                         DivertField {
-                            ressources: vec![
-                                (Ressource::Metal, false),
-                                (Ressource::Nanobots, false),
-                                (Ressource::Nanobots, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Metal, false),
+                                (RessourceType::Nanobots, false),
+                                (RessourceType::Nanobots, false),
                             ],
                         },
                         Ability {
@@ -87,17 +83,17 @@ impl Room {
                 rooms.push(Room::Armoury(
                         Version::V1,
                         RepairField {
-                            ressources: vec![
-                                (Ressource::Data, false),
-                                (Ressource::Nanobots, false),
-                                (Ressource::Metal, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Data, false),
+                                (RessourceType::Nanobots, false),
+                                (RessourceType::Metal, false),
                             ],
                         },
                         DivertField {
-                            ressources: vec![
-                                (Ressource::Metal, false),
-                                (Ressource::Energy, false),
-                                (Ressource::Nanobots, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Metal, false),
+                                (RessourceType::Energy, false),
+                                (RessourceType::Nanobots, false),
                             ],
                         },
                         Ability {
@@ -110,17 +106,17 @@ impl Room {
                 rooms.push(Room::MedicalBay(
                         Version::V1,
                         RepairField {
-                            ressources: vec![
-                                (Ressource::Metal, false),
-                                (Ressource::Nanobots, false),
-                                (Ressource::Energy, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Metal, false),
+                                (RessourceType::Nanobots, false),
+                                (RessourceType::Energy, false),
                             ],
                         },
                         DivertField {
-                            ressources: vec![
-                                (Ressource::Data, false),
-                                (Ressource::Energy, false),
-                                (Ressource::Energy, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Data, false),
+                                (RessourceType::Energy, false),
+                                (RessourceType::Energy, false),
                             ],
                         },
                         Ability {
@@ -133,17 +129,17 @@ impl Room {
                 rooms.push(Room::CargoHold(
                         Version::V1,
                         RepairField {
-                            ressources: vec![
-                                (Ressource::Energy, false),
-                                (Ressource::Metal, false),
-                                (Ressource::Data, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Energy, false),
+                                (RessourceType::Metal, false),
+                                (RessourceType::Data, false),
                             ],
                         },
                         DivertField {
-                            ressources: vec![
-                                (Ressource::Data, false),
-                                (Ressource::Metal, false),
-                                (Ressource::Nanobots, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Data, false),
+                                (RessourceType::Metal, false),
+                                (RessourceType::Nanobots, false),
                             ],
                         },
                         Ability {
@@ -156,17 +152,17 @@ impl Room {
                 rooms.push(Room::RepairCenter(
                         Version::V1,
                         RepairField {
-                            ressources: vec![
-                                (Ressource::Metal, false),
-                                (Ressource::Energy, false),
-                                (Ressource::Nanobots, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Metal, false),
+                                (RessourceType::Energy, false),
+                                (RessourceType::Nanobots, false),
                             ],
                         },
                         DivertField {
-                            ressources: vec![
-                                (Ressource::Data, false),
-                                (Ressource::Energy, false),
-                                (Ressource::Nanobots, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Data, false),
+                                (RessourceType::Energy, false),
+                                (RessourceType::Nanobots, false),
                             ],
                         },
                         Ability {
@@ -179,17 +175,17 @@ impl Room {
                 rooms.push(Room::MessHall(
                         Version::V1,
                         RepairField {
-                            ressources: vec![
-                                (Ressource::Nanobots, false),
-                                (Ressource::Energy, false),
-                                (Ressource::Data, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Nanobots, false),
+                                (RessourceType::Energy, false),
+                                (RessourceType::Data, false),
                             ],
                         },
                         DivertField {
-                            ressources: vec![
-                                (Ressource::Data, false),
-                                (Ressource::Data, false),
-                                (Ressource::Energy, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Data, false),
+                                (RessourceType::Data, false),
+                                (RessourceType::Energy, false),
                             ],
                         },
                         Ability {
@@ -202,17 +198,17 @@ impl Room {
                 rooms.push(Room::Bridge(
                         Version::V1,
                         RepairField {
-                            ressources: vec![
-                                (Ressource::Nanobots, false),
-                                (Ressource::Data, false),
-                                (Ressource::Energy, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Nanobots, false),
+                                (RessourceType::Data, false),
+                                (RessourceType::Energy, false),
                             ],
                         },
                         DivertField {   
-                            ressources: vec![
-                                (Ressource::Data, false),
-                                (Ressource::Metal, false),
-                                (Ressource::Energy, false),
+                            RessourceTypes: vec![
+                                (RessourceType::Data, false),
+                                (RessourceType::Metal, false),
+                                (RessourceType::Energy, false),
                             ],
                         },
                         Ability {
@@ -257,12 +253,12 @@ pub enum Version {
 
 #[derive(Debug)]
 struct RepairField {
-    ressources: Vec<(Ressource, bool)>, // Ressource and amount needed to repair
+    RessourceTypes: Vec<(RessourceType, bool)>, // RessourceType and amount needed to repair
 }
 
 #[derive(Debug)]
 struct DivertField {
-    ressources: Vec<(Ressource, bool)>, // Ressource and amount needed to divert
+    RessourceTypes: Vec<(RessourceType, bool)>, // RessourceType and amount needed to divert
 }
 
 #[derive(Debug)]
