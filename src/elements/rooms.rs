@@ -21,6 +21,7 @@ pub struct Room {
     divert_field: [RessourceType; 3],
     diverted: bool, 
     ability: String,
+    protected: bool, // Indicates if the room is protected
     version: Version,
 }
 
@@ -58,6 +59,7 @@ impl Room {
             ability,
             version,
             diverted: false,
+            protected: false,
         }
     }
             
