@@ -22,7 +22,7 @@ pub struct Room {
     divert_field: [RessourceType; 3],
     diverted: bool, 
     ability: String,
-    protected: bool, // Indicates if the room is protected
+    protected: Vec<String>, // Indicates if the room is protected
     version: Version,
 }
 
@@ -56,7 +56,7 @@ impl Room {
             ability,
             version,
             diverted: false,
-            protected: false,
+            protected: vec![],
         }
     }
             
@@ -269,6 +269,18 @@ impl Room {
         rooms
     }
 
+    //setters
+    pub fn set_shield(&mut self, player_name: String) {
+        self.protected.push(player_name);
+    }
+
+    pub fn check_unset_shield(rooms: &mut Vec<Room>, player_name: String) {
+        for room in rooms.iter_mut() {
+            if let Some(pos) = room.protected.iter().position(|x| *x == player_name) {
+                room.protected.remove(pos);
+            }
+        }
+    }
 }
 
 #[cfg(test)]
