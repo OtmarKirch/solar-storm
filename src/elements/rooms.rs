@@ -63,7 +63,8 @@ impl Room {
         }
     }
             
-
+    /// All 9 rooms are initialized here. A set of rooms is created based on the version of the game. The order of the rooms is randomized, while the EnergyCore is always the fifth element in the vector.
+    /// The placement of the room in the game is determined by the order of the rooms in the vector. Room 1-3 are placed in the first row, room 4-6 in the second row, and room 7-9 in the third row. This determines how players can move their meeples to the rooms.
     pub fn init_rooms(version: Version) -> Vec<Room> {
         let mut rooms = Vec::new();
 
@@ -222,25 +223,6 @@ impl Room {
                         Version::V1,
                     )
                 );
-                rooms.push(
-                    Room::new(
-                        RoomType::EnergyCore,
-                        [
-                                (RessourceType::Universal, false),
-                                (RessourceType::Universal, false),
-                                (RessourceType::Universal, false),
-                            ],
-                        [
-                                RessourceType::Universal,
-                                RessourceType::Universal,
-                                RessourceType::Universal,
-                            ],                       
-                        "When all rooms have diverted power, get here and use 1 action to reactivate the Energy Core."
-                                    .to_string(),
-                        Version::V1,
-                        
-                    )
-                );
             }
             Version::V2 => {
                 rooms.push(
@@ -267,7 +249,27 @@ impl Room {
         // Shuffle the rooms
         let mut rng = rand::rng();
         rooms.shuffle(&mut rng);
-    rooms
+
+        rooms.insert(4,
+                    Room::new(
+                        RoomType::EnergyCore,
+                        [
+                                (RessourceType::Universal, false),
+                                (RessourceType::Universal, false),
+                                (RessourceType::Universal, false),
+                            ],
+                        [
+                                RessourceType::Universal,
+                                RessourceType::Universal,
+                                RessourceType::Universal,
+                            ],                       
+                        "When all rooms have diverted power, get here and use 1 action to reactivate the Energy Core."
+                                    .to_string(),
+                        Version::V1,
+                    )
+                );
+
+        rooms
     }
 
 }
@@ -290,6 +292,6 @@ mod tests {
         assert!(room_types.contains(&RoomType::RepairCenter));
         assert!(room_types.contains(&RoomType::MessHall));
         assert!(room_types.contains(&RoomType::Bridge));
-        assert!(room_types.contains(&RoomType::EnergyCore));      
+        assert_eq!(rooms[4].room_type, RoomType::EnergyCore);      
     }
 }
