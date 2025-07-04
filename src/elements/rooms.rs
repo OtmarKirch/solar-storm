@@ -10,6 +10,7 @@ use std::collections::HashSet;
 use rand::prelude::*;
 
 use crate::elements::ressources::*;
+use crate::game::*;
 
 
 /// Rooms
@@ -38,11 +39,7 @@ pub enum RoomType {
     EnergyCore,
     AnyRoom
 }
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum Version {
-    V1,
-    V2,
-}
+
 
 impl Room {
     fn new(

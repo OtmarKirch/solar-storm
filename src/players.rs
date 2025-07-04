@@ -15,6 +15,10 @@ impl Player {
         }
     }
 
+    pub fn init(names: Vec<String>) -> Vec<Self> {
+        names.into_iter().map(|name| Player::new(name)).collect()
+    }
+
     pub fn add_ressource(&mut self, ressource: Ressource) {
         self.hand.push(ressource);
     }
