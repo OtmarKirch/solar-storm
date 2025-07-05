@@ -82,36 +82,59 @@ impl Player {
             panic!("Values above 9 should not be able to reach this method. Value is {}", new_position);
         }
         match self.position {
-            1 => 
-                if !(new_position == 2 || new_position == 4) {
+            1 => if !(new_position == 2 || new_position == 4) {
                     return Err(PlayerActionError::InvalidDestination {
                         current: self.position,
                         attempted: new_position,
                     })                   
                 },
             2 => if !(new_position == 1 || new_position == 3 || new_position == 5) {
-                    panic!("Invalid move from position 2 to {}", new_position);
+                    return Err(PlayerActionError::InvalidDestination {
+                        current: self.position,
+                        attempted: new_position,
+                    })
                 },
             3 => if !(new_position == 2 || new_position == 6) {
-                    panic!("Invalid move from position 3 to {}", new_position);
+                    return Err(PlayerActionError::InvalidDestination {
+                        current: self.position,
+                        attempted: new_position,
+                    })  
                 },
             4 => if !(new_position == 1 || new_position == 5 || new_position == 7) {
-                    panic!("Invalid move from position 4 to {}", new_position);
+                    return Err(PlayerActionError::InvalidDestination {
+                        current: self.position,
+                        attempted: new_position,
+                    })  
                 },
             5 => if !(new_position == 2 || new_position == 4 || new_position == 6 || new_position == 8) {
-                    panic!("Invalid move from position 5 to {}", new_position);
+                    return Err(PlayerActionError::InvalidDestination {
+                        current: self.position,
+                        attempted: new_position,
+                    })  
                 },
             6 => if !(new_position == 3 || new_position == 5 || new_position == 9) {
-                    panic!("Invalid move from position 6 to {}", new_position);
+                    return Err(PlayerActionError::InvalidDestination {
+                        current: self.position,
+                        attempted: new_position,
+                    })  
                 },
             7 => if !(new_position == 4 || new_position == 8) {
-                    panic!("Invalid move from position 7 to {}", new_position);
+                    return Err(PlayerActionError::InvalidDestination {
+                        current: self.position,
+                        attempted: new_position,
+                    })  
                 },
             8 => if !(new_position == 5 || new_position == 7 || new_position == 9) {
-                    panic!("Invalid move from position 8 to {}", new_position);
+                    return Err(PlayerActionError::InvalidDestination {
+                        current: self.position,
+                        attempted: new_position,
+                    })  
                 },
             9 => if !(new_position == 6 || new_position == 8) {
-                    panic!("Invalid move from position 9 to {}", new_position);
+                    return Err(PlayerActionError::InvalidDestination {
+                        current: self.position,
+                        attempted: new_position,
+                    })  
                 },
             _ => panic!("Invalid current position: {}", self.position),
 
@@ -122,7 +145,7 @@ impl Player {
     }
 
     pub fn set_position(&mut self, new_position: usize) -> usize {
-        if new_position < 0 || new_position > 9 {
+        if new_position > 9 {
             panic!("Invalid position: {}", new_position);
         }
         self.position = new_position;
@@ -191,5 +214,12 @@ mod tests {
         assert_eq!(player.hand()[0].ressource_type(), &RessourceType::Metal);
         assert_eq!(player.hand()[1].ressource_type(), &RessourceType::Nanobots);
     } */
+
+    #[test]
+    fn test_move_position() {
+        let mut player = Player::new("Alice".to_string());
+        assert_eq!(player.move_position(2), Ok(()));
+        assert_eq!(player.position(), 2);
+    }
 
 }
