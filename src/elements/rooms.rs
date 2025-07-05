@@ -278,9 +278,26 @@ impl Room {
         &mut self.repair_field
     }
 
+    pub fn is_protected(&self) -> bool {
+        !self.protected.is_empty()
+    }
+
     //setters
     pub fn set_shield(&mut self, player_name: String) {
         self.protected.push(player_name);
+    }
+
+    /// This method damages the first field in the repair field that has not been damaged yet, and return true if a field was successfully damaged. 
+    /// If all fields are already damaged, it returns false. This can be used to determine if the end game condition has been reached.
+    pub fn damage_room(&mut self) -> bool {
+        let repair_field = &mut self.repair_field;
+        let first_healthy_field = dbg!(repair_field.iter_mut().find(|(_, damaged)| damaged == &false));
+        if let Some((_, damaged)) = first_healthy_field {
+            *damaged = true; // Set the first healthy field to damaged
+            true
+        } else {
+            false // All repair fields are already damaged. This bool can be used to determine that end game condition has been reached.
+        }
     }
 
 
@@ -352,5 +369,27 @@ mod tests {
 
         repair_field[1].1 = true; // Simulate repairing the second field
         assert_eq!(repair_field[1].1, true, "Expected the second repair field to be set to true after damage");
+    }
+
+    #[test]
+    fn test_damage_room() {
+        let mut rooms = Room::init_rooms(Version::V1);
+        let mut room = &mut rooms[0];
+        let repair_field = room.repair_field();
+        room.damage_room();
+        let repair_field = dbg!(room.repair_field());
+        assert_eq!(repair_field[0].1, true, "Expected the first repair field to be set to true after damage");
+    }
+
+    #[test]
+    fn test_damage_room_all_fields_damaged() {
+        let mut rooms = Room::init_rooms(Version::V1);
+        let room = &mut rooms[0];
+        let repair_field = room.repair_field();
+        // Set all repair fields to damaged
+        for field in repair_field.iter_mut() {
+            field.1 = true;
+        }
+        assert!(!room.damage_room(), "Expected damage_room to return false when all fields are already damaged");
     }
 }
