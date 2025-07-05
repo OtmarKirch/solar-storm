@@ -27,9 +27,11 @@ pub fn share_ressources(player: &mut Player, other_player: &mut Player, ressourc
 }
 pub fn repair_room(player: &mut Player, rooms: &mut Vec<Room>, repair_field_index: usize) -> bool {
     let room = &mut rooms[player.position()];
-    if room.is_damaged() {
-        todo!("Implement the logic to successful repair a room here");
+    let repair_field = room.repair_field();
+    if repair_field[repair_field_index].1 {
+        player.remove_ressources(vec![Ressource::new(repair_field[repair_field_index].0.clone())]);
+        true
     } else {
-        return false; // Room is not damaged, cannot repair
+        return false
     }
 }

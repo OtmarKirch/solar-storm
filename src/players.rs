@@ -24,8 +24,8 @@ impl Player {
     }
 
     //getters
-    pub fn hand(&self) -> &Vec<Ressource> {
-        &self.hand
+    pub fn hand(&mut self) -> &mut Vec<Ressource> {
+        &mut self.hand
     }
 
     pub fn name(&self) -> &String {
@@ -139,7 +139,7 @@ mod tests {
 
     #[test]
     fn test_player_creation() {
-        let player = Player::new("Alice".to_string());
+        let mut player = Player::new("Alice".to_string());
         assert_eq!(player.name(), "Alice");
         assert_eq!(player.hand().len(), 0);
         assert_eq!(player.action_tokens(), 0);
