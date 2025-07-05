@@ -1,12 +1,12 @@
 mod elements;
 mod players;
 mod game;
-mod mechanics;
+mod procedure;
 
 use elements::*;
 use players::*;
 use game::*;
-use mechanics::*;
+use procedure::*;
 
 fn main() {
     let rooms = dbg!(Room::init_rooms(Version::V1));
