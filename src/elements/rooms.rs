@@ -269,11 +269,22 @@ impl Room {
         rooms
     }
 
+    //getters
+    pub fn room_type(&self) -> &RoomType {
+        &self.room_type
+    }
+
+    pub fn repair_field(&mut self) -> &mut [(RessourceType, bool); 3] {
+        &mut self.repair_field
+    }
+
     //setters
     pub fn set_shield(&mut self, player_name: String) {
         self.protected.push(player_name);
     }
 
+
+    /// This method implements the removal of the protection tokens at the start of the player's turn.
     pub fn check_unset_shield(rooms: &mut Vec<Room>, player_name: String) {
         for room in rooms.iter_mut() {
             if let Some(pos) = room.protected.iter().position(|x| *x == player_name) {
@@ -285,8 +296,9 @@ impl Room {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::elements::rooms;
 
+    use super::*;
 
     #[test]
     fn test_init_rooms() {
@@ -302,5 +314,43 @@ mod tests {
         assert!(room_types.contains(&RoomType::MessHall));
         assert!(room_types.contains(&RoomType::Bridge));
         assert_eq!(rooms[4].room_type, RoomType::EnergyCore);      
+    }
+
+    #[test]
+    fn test_room_type() {
+        let room = Room::new(
+            RoomType::CrewQuarters,
+            [
+                (RessourceType::Energy, false),
+                (RessourceType::Data, false),
+                (RessourceType::Metal, false),
+            ],
+            [
+                RessourceType::Metal,
+                RessourceType::Metal,
+                RessourceType::Nanobots,
+            ],
+            "Move a player's meeple to a room that has another meeple in it".to_string(),
+            Version::V1,
+        );
+        assert_eq!(room.room_type(), &RoomType::CrewQuarters);
+    }
+
+    #[test]
+    fn test_repair_field() {
+        let mut rooms = Room::init_rooms(Version::V1);
+        let mut room = &mut rooms[0];
+        let room_type = &room.room_type;
+        let mut repair_field = room.repair_field();
+
+        let repair_field_hash: HashSet<_> = repair_field.iter().map(|(r_type, _)| r_type).collect();
+        assert_eq!(repair_field_hash.len(), 3, "Expected repair field to have 3 unique RessourceTypes");
+
+        for field in repair_field.iter() {
+            assert_eq!(field.1, false, "Expected all repair fields to have a boolean value of false after initialization");
+        }
+
+        repair_field[1].1 = true; // Simulate repairing the second field
+        assert_eq!(repair_field[1].1, true, "Expected the second repair field to be set to true after damage");
     }
 }

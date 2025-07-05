@@ -1,6 +1,7 @@
 use crate::game::*;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RessourceType {
     Metal,
     Energy,
@@ -9,7 +10,7 @@ pub enum RessourceType {
     Universal
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Ressource {
     ressource_type: RessourceType,
 }
