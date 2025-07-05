@@ -43,6 +43,11 @@ impl Ressource {
         
         ressources
     }
+
+    // getters
+    pub fn ressource_type(&self) -> &RessourceType {
+        &self.ressource_type
+    }
 }
 
 #[cfg(test)]
@@ -60,4 +65,9 @@ mod tests {
         assert_eq!(ressources.iter().filter(|r_t| r_t.ressource_type == RessourceType::Universal).count(), 2);    
     }
 
+    #[test]
+    fn test_ressource_type() {
+        let ressource = Ressource::new(RessourceType::Metal);
+        assert_eq!(ressource.ressource_type(), &RessourceType::Metal);
+    }
 }
