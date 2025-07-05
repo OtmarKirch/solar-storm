@@ -23,10 +23,6 @@ impl Player {
         names.into_iter().map(|name| Player::new(name)).collect()
     }
 
-    pub fn add_ressource(&mut self, ressource: Ressource) {
-        self.hand.push(ressource);
-    }
-
     //getters
     pub fn hand(&self) -> &Vec<Ressource> {
         &self.hand
@@ -45,9 +41,9 @@ impl Player {
     }
 
     //setters
-    pub fn set_action_tokens(&mut self, gain: i32) -> u32 {
+    pub fn add_sub_action_tokens(&mut self, gain: i32) -> u32 {
         if self.action_tokens as i32 + gain >= 0 {
-        self.action_tokens = self.action_tokens + gain as u32;
+        self.action_tokens = (self.action_tokens as i32 + gain) as u32;
         return self.action_tokens
         } else {
             panic!("Action tokens cannot be negative");
@@ -127,4 +123,76 @@ impl Player {
         self.position = new_position;
         self.position
     }
+
+    pub fn set_position(&mut self, new_position: usize) -> usize {
+        if new_position < 0 || new_position > 9 {
+            panic!("Invalid position: {}", new_position);
+        }
+        self.position = new_position;
+        self.position
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_player_creation() {
+        let player = Player::new("Alice".to_string());
+        assert_eq!(player.name(), "Alice");
+        assert_eq!(player.hand().len(), 0);
+        assert_eq!(player.action_tokens(), 0);
+        assert_eq!(player.position(), 5);
+    }
+
+    #[test]
+    fn test_player_init() {
+        let names = vec!["Alice".to_string(), "Bob".to_string()];
+        let players = Player::init(names);
+        assert_eq!(players.len(), 2);
+        assert_eq!(players[0].name(), "Alice");
+        assert_eq!(players[1].name(), "Bob");        
+    }
+
+    #[test]
+    fn test_add_sub_action_tokens() {
+        let mut player = Player::new("Alice".to_string());
+        assert_eq!(player.add_sub_action_tokens(3), 3);
+        assert_eq!(player.action_tokens(), 3);
+        assert_eq!(player.add_sub_action_tokens(-1), 2);
+        assert_eq!(player.action_tokens(), 2);
+    }
+
+    #[test]
+    #[should_panic(expected = "Action tokens cannot be negative")]
+    fn test_add_sub_action_tokens_negative() {
+        let mut player = Player::new("Alice".to_string());
+        player.add_sub_action_tokens(-1);
+    }
+
+    #[test]
+    fn test_add_ressources() {
+        let mut player = Player::new("Alice".to_string());
+        player.add_ressources(vec![Ressource::new(RessourceType::Data), Ressource::new(RessourceType::Metal)]);
+        player.add_ressources(vec![Ressource::new(RessourceType::Energy), Ressource::new(RessourceType::Nanobots)]);
+        assert_eq!(player.hand().len(), 4);
+        assert_eq!(player.hand()[0].ressource_type(), &RessourceType::Data);
+        assert_eq!(player.hand()[1].ressource_type(), &RessourceType::Metal);
+        assert_eq!(player.hand()[2].ressource_type(), &RessourceType::Energy);
+        assert_eq!(player.hand()[3].ressource_type(), &RessourceType::Nanobots);
+    }
+    #[test]
+    fn test_remove_ressources() {
+        let mut player = Player::new("Alice".to_string());
+        player.add_ressources(vec![Ressource::new(RessourceType::Data), Ressource::new(RessourceType::Metal)]);
+        player.add_ressources(vec![Ressource::new(RessourceType::Energy), Ressource::new(RessourceType::Nanobots)]);      
+        assert_eq!(player.hand().len(), 4);
+
+        player.remove_ressources(vec![Ressource::new(RessourceType::Data), Ressource::new(RessourceType::Energy)]);
+        assert_eq!(player.hand().len(), 2);
+        assert_eq!(player.hand()[0].ressource_type(), &RessourceType::Metal);
+        assert_eq!(player.hand()[1].ressource_type(), &RessourceType::Nanobots);
+    }
+
 }
