@@ -7,6 +7,11 @@ pub struct Player {
     position: usize,
 }
 
+#[derive(Debug, PartialEq)]
+pub enum PlayerActionError {
+    InvalidDestination { current: usize, attempted: usize },
+}
+
 impl Player {
     //constructor
     pub fn new(name: String) -> Self {
@@ -55,73 +60,65 @@ impl Player {
         &self.hand
     }
 
-    pub fn remove_ressources(&mut self, ressources: Vec<Ressource>) -> &Vec<Ressource> {
+    /* pub fn remove_ressources(&mut self, ressources: Vec<Ressource>) -> bool {
+        for ressources in ressources.iter() {
+            if !self.hand.contains(ressources) {
+                return false; // If any ressource is not in hand, return false
+            }
+        }
+        
         for ressource in ressources {
             if let Some(pos) = self.hand.iter().position(|x| *x == ressource) {
                 self.hand.remove(pos);
+                return true;
             } else {
-                panic!("Ressource not found in hand");
+                return false;
             }
         }
-        &self.hand
-    }
+    } */
 
-    pub fn move_position(&mut self, new_position: usize) -> usize {
-        if new_position < 0 || new_position > 9 {
-            panic!("Invalid position: {}", new_position);
+    pub fn move_position(&mut self, new_position: usize) -> Result<(), PlayerActionError> {
+        if new_position > 9 {            
+            panic!("Values above 9 should not be able to reach this method. Value is {}", new_position);
         }
         match self.position {
-            1 => {
+            1 => 
                 if !(new_position == 2 || new_position == 4) {
-                    panic!("Invalid move from position 1 to {}", new_position);
-                }
-            },
-            2 => {
-                if !(new_position == 1 || new_position == 3 || new_position == 5) {
+                    return Err(PlayerActionError::InvalidDestination {
+                        current: self.position,
+                        attempted: new_position,
+                    })                   
+                },
+            2 => if !(new_position == 1 || new_position == 3 || new_position == 5) {
                     panic!("Invalid move from position 2 to {}", new_position);
-                }
-            },
-            3 => {
-                if !(new_position == 2 || new_position == 6) {
+                },
+            3 => if !(new_position == 2 || new_position == 6) {
                     panic!("Invalid move from position 3 to {}", new_position);
-                }
-            },
-            4 => {
-                if !(new_position == 1 || new_position == 5 || new_position == 7) {
+                },
+            4 => if !(new_position == 1 || new_position == 5 || new_position == 7) {
                     panic!("Invalid move from position 4 to {}", new_position);
-                }
-            },
-            5 => {
-                if !(new_position == 2 || new_position == 4 || new_position == 6 || new_position == 8) {
+                },
+            5 => if !(new_position == 2 || new_position == 4 || new_position == 6 || new_position == 8) {
                     panic!("Invalid move from position 5 to {}", new_position);
-                }
-            },
-            6 => {
-                if !(new_position == 3 || new_position == 5 || new_position == 9) {
+                },
+            6 => if !(new_position == 3 || new_position == 5 || new_position == 9) {
                     panic!("Invalid move from position 6 to {}", new_position);
-                }
-            },
-            7 => {
-                if !(new_position == 4 || new_position == 8) {
+                },
+            7 => if !(new_position == 4 || new_position == 8) {
                     panic!("Invalid move from position 7 to {}", new_position);
-                }
-            },
-            8 => {
-                if !(new_position == 5 || new_position == 7 || new_position == 9) {
+                },
+            8 => if !(new_position == 5 || new_position == 7 || new_position == 9) {
                     panic!("Invalid move from position 8 to {}", new_position);
-                }
-            },
-            9 => {
-                if !(new_position == 6 || new_position == 8) {
+                },
+            9 => if !(new_position == 6 || new_position == 8) {
                     panic!("Invalid move from position 9 to {}", new_position);
-                }
-            },
+                },
             _ => panic!("Invalid current position: {}", self.position),
 
         }
 
         self.position = new_position;
-        self.position
+        Ok(())
     }
 
     pub fn set_position(&mut self, new_position: usize) -> usize {
@@ -182,7 +179,7 @@ mod tests {
         assert_eq!(player.hand()[2].ressource_type(), &RessourceType::Energy);
         assert_eq!(player.hand()[3].ressource_type(), &RessourceType::Nanobots);
     }
-    #[test]
+    /* #[test]
     fn test_remove_ressources() {
         let mut player = Player::new("Alice".to_string());
         player.add_ressources(vec![Ressource::new(RessourceType::Data), Ressource::new(RessourceType::Metal)]);
@@ -193,6 +190,6 @@ mod tests {
         assert_eq!(player.hand().len(), 2);
         assert_eq!(player.hand()[0].ressource_type(), &RessourceType::Metal);
         assert_eq!(player.hand()[1].ressource_type(), &RessourceType::Nanobots);
-    }
+    } */
 
 }

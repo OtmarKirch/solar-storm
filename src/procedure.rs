@@ -25,7 +25,7 @@ pub fn share_ressources(player: &mut Player, other_player: &mut Player, ressourc
         false
     }
 }
-pub fn repair_room(player: &mut Player, rooms: &mut Vec<Room>, repair_field_index: usize) -> bool {
+/* pub fn repair_room(player: &mut Player, rooms: &mut Vec<Room>, repair_field_index: usize) -> bool {
     let room = &mut rooms[player.position()];
     let repair_field = room.repair_field();
     if repair_field[repair_field_index].1 {
@@ -34,4 +34,4 @@ pub fn repair_room(player: &mut Player, rooms: &mut Vec<Room>, repair_field_inde
     } else {
         return false
     }
-}
+} */
